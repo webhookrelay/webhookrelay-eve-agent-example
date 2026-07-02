@@ -109,7 +109,7 @@ curl -X POST http://127.0.0.1:3000/eve/v1/webhook \
 ```
 
 Or skip the manual curl entirely and forward the real bucket to your dev
-server with the [relay CLI](https://webhookrelay.com/v1/installation/cli/):
+server with the [relay CLI](https://webhookrelay.com/docs/installation/cli/):
 
 ```bash
 relay forward --bucket eve-agent-example http://127.0.0.1:3000/eve/v1/webhook
@@ -131,4 +131,4 @@ relay forward --bucket eve-agent-example http://127.0.0.1:3000/eve/v1/webhook
 
 - Blog post: [Trigger a self-hosted AI agent with webhooks — on a Raspberry Pi or Mac mini](https://webhookrelay.com/blog/self-hosted-ai-agent-webhooks/)
 - [eve framework docs](https://vercel.com/eve)
-- [Webhook Relay docs](https://webhookrelay.com/v1/guide/)
+- [Webhook Relay docs](https://webhookrelay.com/docs/)
