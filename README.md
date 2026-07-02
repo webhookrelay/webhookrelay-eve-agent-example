@@ -5,22 +5,14 @@ infrastructure — a Raspberry Pi, a Mac mini, a NAS, a VM behind a corporate
 firewall — and is triggered by webhooks from anywhere on the internet,
 **without opening a single inbound port**.
 
+![eve agent project structure powered by Webhook Relay](docs/eve-webhookrelay.png)
+
 [Webhook Relay](https://webhookrelay.com) provides the stable public HTTPS
 endpoint. The `webhookrelayd` sidecar in this repo's docker-compose keeps an
 *outbound* connection to it and delivers every webhook to the agent over the
 internal compose network:
 
-```text
-GitHub / Stripe / Grafana / anything
-        │  POST https://xxxxx.hooks.webhookrelay.com/
-        ▼
-Webhook Relay cloud (public endpoint, optional durable retries)
-        │  outbound WebSocket — no inbound ports, works behind NAT
-        ▼
-webhookrelayd sidecar ──▶ eve agent (this repo)
-   (docker-compose)        POST /eve/v1/webhook
-                           └─ triages the event, writes reports/<date>-<slug>.md
-```
+![Architecture: webhooks cross the NAT/firewall boundary from Webhook Relay Cloud to the webhookrelayd sidecar and eve agent on your home network or office LAN](docs/architecture.svg)
 
 The example agent is a **webhook triage agent**: for every event it receives
 (a GitHub issue, a Stripe payment failure, a monitoring alert, any JSON) it

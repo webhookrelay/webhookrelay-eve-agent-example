@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 600" width="920" height="600" role="img" aria-label="Architecture: webhooks from GitHub, Stripe or Grafana reach Webhook Relay Cloud, then cross the NAT/firewall boundary over an outbound WebSocket to the webhookrelayd sidecar and eve agent running on a home network or office LAN">
+  <defs>
+    <marker id="arrowBlue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#38bdf8"/>
+    </marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#34d399"/>
+    </marker>
+    <marker id="arrowSlate" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
+    </marker>
+    <style>
+      .sans { font-family: Inter, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif; }
+      .mono { font-family: "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, monospace; }
+    </style>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0.5" y="0.5" width="919" height="599" rx="16" fill="#070b14" stroke="#1e293b"/>
+
+  <!-- INTERNET zone -->
+  <text class="sans" x="40" y="46" font-size="12" font-weight="700" letter-spacing="3" fill="#64748b">INTERNET</text>
+
+  <!-- provider chips -->
+  <g class="sans" font-size="14" text-anchor="middle">
+    <rect x="204" y="70" width="100" height="36" rx="18" fill="#0e1626" stroke="#243146"/>
+    <text x="254" y="93" fill="#cbd5e1">GitHub</text>
+    <rect x="320" y="70" width="90" height="36" rx="18" fill="#0e1626" stroke="#243146"/>
+    <text x="365" y="93" fill="#cbd5e1">Stripe</text>
+    <rect x="426" y="70" width="104" height="36" rx="18" fill="#0e1626" stroke="#243146"/>
+    <text x="478" y="93" fill="#cbd5e1">Grafana</text>
+    <rect x="546" y="70" width="170" height="36" rx="18" fill="#0e1626" stroke="#243146"/>
+    <text x="631" y="93" fill="#cbd5e1">any webhook source</text>
+  </g>
+
+  <!-- fan-in from chips -->
+  <g fill="none" stroke="#243146" stroke-width="1.5">
+    <path d="M254,106 Q254,126 448,130"/>
+    <path d="M365,106 Q365,124 450,130"/>
+    <path d="M478,106 Q478,122 466,128"/>
+    <path d="M631,106 Q631,126 472,130"/>
+  </g>
+
+  <!-- POST to public endpoint -->
+  <line x1="460" y1="130" x2="460" y2="162" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrowBlue)"/>
+  <text class="mono" x="446" y="150" font-size="12" fill="#7dd3fc" text-anchor="end">POST https://xxxxx.hooks.webhookrelay.com/</text>
+
+  <!-- Webhook Relay Cloud -->
+  <rect x="260" y="170" width="400" height="64" rx="12" fill="#0e1626" stroke="#38bdf8" stroke-width="1.5"/>
+  <text class="sans" x="460" y="196" font-size="15" font-weight="600" fill="#f1f5f9" text-anchor="middle">Webhook Relay Cloud</text>
+  <text class="sans" x="460" y="218" font-size="12" fill="#94a3b8" text-anchor="middle">public HTTPS endpoint &#183; durable retries &amp; replay</text>
+
+  <!-- crossing connections (drawn before the boundary pill so it gates them) -->
+  <line x1="430" y1="374" x2="430" y2="242" stroke="#34d399" stroke-width="2" marker-end="url(#arrowGreen)"/>
+  <line x1="490" y1="240" x2="490" y2="370" stroke="#38bdf8" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arrowBlue)"/>
+  <text class="sans" x="414" y="264" font-size="12.5" fill="#34d399" text-anchor="end">outbound WebSocket &#8212; initiated from inside</text>
+  <text class="sans" x="506" y="364" font-size="12.5" fill="#7dd3fc">webhooks delivered</text>
+
+  <!-- network boundary -->
+  <line x1="32" y1="300" x2="888" y2="300" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="8 6" opacity="0.7"/>
+  <rect x="280" y="284" width="360" height="32" rx="16" fill="#070b14" stroke="#f59e0b"/>
+  <g fill="none" stroke="#fbbf24" stroke-width="1.6">
+    <path d="M304,297 v-4 a5,5 0 0 1 10,0 v4"/>
+  </g>
+  <rect x="302" y="297" width="14" height="10" rx="2" fill="#fbbf24"/>
+  <text class="sans" x="326" y="306" font-size="12.5" fill="#fbbf24">NAT / firewall &#8212; no inbound ports, no public IP</text>
+
+  <!-- LAN zone -->
+  <text class="sans" x="40" y="346" font-size="12" font-weight="700" letter-spacing="3" fill="#64748b">HOME NETWORK / OFFICE LAN</text>
+  <text class="sans" x="880" y="346" font-size="12" fill="#475569" text-anchor="end">Raspberry Pi &#183; Mac mini &#183; NAS &#183; any always-on box</text>
+
+  <!-- docker-compose container -->
+  <rect x="130" y="376" width="660" height="120" rx="12" fill="none" stroke="#334155" stroke-dasharray="4 4"/>
+  <rect x="142" y="368" width="110" height="16" fill="#070b14"/>
+  <text class="sans" x="150" y="381" font-size="11.5" fill="#64748b">docker-compose</text>
+
+  <!-- webhookrelayd sidecar -->
+  <rect x="150" y="400" width="230" height="72" rx="10" fill="#0e1626" stroke="#34d399"/>
+  <text class="sans" x="265" y="432" font-size="14.5" font-weight="600" fill="#f1f5f9" text-anchor="middle">webhookrelayd sidecar</text>
+  <text class="sans" x="265" y="452" font-size="11.5" fill="#94a3b8" text-anchor="middle">subscribes to the bucket</text>
+
+  <!-- internal delivery -->
+  <line x1="384" y1="440" x2="534" y2="440" stroke="#64748b" stroke-width="1.8" marker-end="url(#arrowSlate)"/>
+  <text class="mono" x="460" y="428" font-size="11.5" fill="#7dd3fc" text-anchor="middle">POST /eve/v1/webhook</text>
+
+  <!-- eve agent -->
+  <rect x="540" y="400" width="230" height="72" rx="10" fill="#0e1626" stroke="#7dd3fc"/>
+  <text class="sans" x="655" y="432" font-size="14.5" font-weight="600" fill="#f1f5f9" text-anchor="middle">eve agent</text>
+  <text class="sans" x="655" y="452" font-size="11.5" fill="#94a3b8" text-anchor="middle">durable session per webhook</text>
+
+  <!-- report output -->
+  <line x1="655" y1="472" x2="655" y2="516" stroke="#64748b" stroke-width="1.8" marker-end="url(#arrowSlate)"/>
+  <rect x="525" y="520" width="260" height="46" rx="10" fill="#0e1626" stroke="#243146"/>
+  <text class="mono" x="655" y="539" font-size="12" fill="#cbd5e1" text-anchor="middle">reports/&lt;date&gt;-&lt;slug&gt;.md</text>
+  <text class="sans" x="655" y="556" font-size="11" fill="#64748b" text-anchor="middle">triage report via save_report</text>
+</svg>
