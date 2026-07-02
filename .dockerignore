@@ -1,0 +1,14 @@
+node_modules
+.eve
+.output
+.nitro
+.workflow-data
+.env*
+.git
+.gitignore
+reports
+dist
+*.log
+*.tsbuildinfo
+.DS_Store
+README.md

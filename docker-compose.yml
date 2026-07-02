@@ -1,0 +1,39 @@
+services:
+  # The eve agent. Never exposed to the internet — the Webhook Relay sidecar
+  # delivers webhooks to it over the internal compose network.
+  agent:
+    build: .
+    image: webhookrelay/eve-agent-example
+    env_file:
+      - .env.local
+    environment:
+      - PORT=3000
+    # Host port is optional — handy for health checks and local curl tests,
+    # but nothing external needs to reach the agent directly.
+    ports:
+      - "${HOST_PORT:-3900}:3000"
+    volumes:
+      # Durable session state survives restarts.
+      - workflow-data:/app/.workflow-data
+      # Triage reports written by the agent's save_report tool.
+      - ./reports:/app/reports
+    restart: unless-stopped
+
+  # Webhook Relay sidecar: keeps an outbound connection to Webhook Relay,
+  # subscribes to the bucket and forwards each webhook to the agent. The
+  # bucket needs an *internal* output pointing at:
+  #   http://agent:3000/eve/v1/webhook
+  # RELAY_KEY / RELAY_SECRET come from .env.local (a token from
+  # https://my.webhookrelay.com/tokens). BUCKETS is a comma-separated list.
+  webhookrelay:
+    image: webhookrelay/webhookrelayd:latest
+    env_file:
+      - .env.local
+    environment:
+      - BUCKETS=eve-agent-example
+    depends_on:
+      - agent
+    restart: unless-stopped
+
+volumes:
+  workflow-data:

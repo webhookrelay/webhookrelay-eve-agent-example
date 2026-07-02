@@ -1,0 +1,11 @@
+node_modules
+.eve
+.output
+.nitro
+.workflow-data
+.env*
+!.env.example
+reports/
+*.log
+*.tsbuildinfo
+.DS_Store
